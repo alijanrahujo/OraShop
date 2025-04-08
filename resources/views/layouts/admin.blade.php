@@ -386,12 +386,6 @@
                             <a class="waves-effect waves-dark" href="{{route('load.index')}}" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Load</span></a>
                         </li>
 
-                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Purchase <span class="label label-rouded label-danger pull-right">25</span></span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="">Accessory</a></li>
-                            </ul>
-                        </li>
-
                         {{-- <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-bullseye"></i><span class="hide-menu">Apps</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="app-calendar.html">Calendar</a></li>
