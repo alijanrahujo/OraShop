@@ -41,13 +41,13 @@
 
             <!-- LOGO -->
             <div class="topbar-left">
-                <a href="../dashboard/crm-index.html" class="logo">
+                <a href="/" class="logo">
                     <span>
-                        <img src="{{ asset('admin/assets/images/logo-sm.png') }}" alt="logo-small" class="logo-sm">
+                        <img src="{{ asset('admin/assets/images/orasoft logo.jpg') }}" alt="logo-small" class="logo-sm">
                     </span>
                     <span>
-                        <img src="{{ asset('admin/assets/images/logo.png') }}" alt="logo-large" class="logo-lg logo-light">
-                        <img src="{{ asset('admin/assets/images/logo-dark.png') }}" alt="logo-large" class="logo-lg">
+                        <img src="{{ asset('admin/assets/images/orasoft logo.jpg') }}" alt="logo-large" class="logo-lg logo-light">
+                        {{-- <img src="{{ asset('admin/assets/images/orasoft logo.jpg') }}" alt="logo-large" class="logo-lg"> --}}
                     </span>
                 </a>
             </div>
@@ -158,7 +158,7 @@
                         <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
                             aria-haspopup="false" aria-expanded="false">
                             <img src="{{ asset('admin/assets/images/users/user-1.png') }}" alt="profile-user" class="rounded-circle" />
-                            <span class="ml-1 nav-user-name hidden-sm">Amelia <i class="mdi mdi-chevron-down"></i> </span>
+                            <span class="ml-1 nav-user-name hidden-sm">{{auth()->user()->name}} <i class="mdi mdi-chevron-down"></i> </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="#"><i class="ti-user text-muted mr-2"></i> Profile</a>

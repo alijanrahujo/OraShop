@@ -18,7 +18,11 @@
         <link href="{{ asset('admin/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('admin/assets/css/metisMenu.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('admin/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
-
+        <style>
+            .account-body .auth-card .auth-logo-box .auth-logo {
+                border-radius: 10%;
+            }
+        </style>
     </head>
 
     <body class="account-body accountbg">
@@ -32,7 +36,7 @@
                             <div class="card-body">
                                 <div class="px-3">
                                     <div class="auth-logo-box">
-                                        <a href="/" class="logo logo-admin"><img src="{{ asset('admin/assets/images/logo-sm.png') }}" height="55" alt="logo" class="auth-logo"></a>
+                                        <a href="/" class="logo logo-admin"><img src="{{ asset('admin/assets/images/orasoft logo.jpg') }}" height="55" alt="logo" class="auth-logo"></a>
                                     </div><!--end auth-logo-box-->
 
                                     <div class="text-center auth-logo-text">

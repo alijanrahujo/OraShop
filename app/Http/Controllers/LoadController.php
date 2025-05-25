@@ -82,7 +82,18 @@ class LoadController extends Controller
      */
     public function update(Request $request, Load $load)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'commission' => 'required',
+        ]);
+
+        $load->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'commission' => $request->commission,
+        ]);
+
+        return redirect()->route('load.index')->with('success', 'Load edited successfully.');
     }
 
     /**

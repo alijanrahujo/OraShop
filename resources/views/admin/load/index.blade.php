@@ -62,8 +62,11 @@
                                         <button type="button" class="btn btn-sm btn-success deposit"
                                                 data-load_id="{{ $load->id }}" data-toggle="modal"
                                                 data-target="#depositModal">Deposit</button>
-                                        <a href="{{ route('load.edit', $load->id) }}"
-                                            class="btn btn-sm btn-primary">Edit</a>
+
+                                        <button type="button" class="btn btn-sm btn-warning edit"
+                                        data-load_id="{{ $load->id }}" data-title="{{$load->title}}" data-description="{{$load->description}}" data-commission="{{$load->commission}}" data-toggle="modal"
+                                        data-target="#editModal">Edit</button>
+
                                         <form action="{{ route('load.destroy', $load->id) }}" method="POST"
                                             style="display:inline;"
                                             onsubmit="return confirm('Are you sure you want to delete this?');">
@@ -119,6 +122,44 @@
         </div>
     </div>
 
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="createModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createModalTitle">Edit Load Account</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="" method="POST" id="editForm">
+                    @method('PUT')
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="title" class="control-label">Title: <span class="text-danger">*</span></label>
+                            <input type="text" name="title" class="form-control" id="edittitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="control-label">Description:</label>
+                            <input type="text" name="description" class="form-control" id="editdescription">
+                        </div>
+                        <div class="form-group">
+                            <label for="commission" class="control-label">Commission on 1000: <span class="text-danger">*</span></label>
+                            <input type="number" name="commission" value="26" class="form-control" id="editcommission" required>
+                        </div>
+                    </div>
+                    <input type="hidden" name="load_id" id="editload_id" value="">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Deposit Modal -->
     <div class="modal fade" id="depositModal" tabindex="-1" role="dialog" aria-labelledby="depositModalTitle"
         aria-hidden="true">
@@ -160,5 +201,19 @@
             var load_id = $(this).data('load_id');
             $('#load_id').val(load_id);
         })
+
+        $('.edit').click(function() {
+            var load_id = $(this).data('load_id');
+            var title = $(this).data('title');
+            var description = $(this).data('description');
+            var commission = $(this).data('commission');
+            $('#editload_id').val(load_id);
+            $('#edittitle').val(title);
+            $('#editdescription').val(description);
+            $('#editcommission').val(commission);
+
+            $('#editForm').attr('action', 'load/' + load_id);
+        })
+
     </script>
 @endsection
