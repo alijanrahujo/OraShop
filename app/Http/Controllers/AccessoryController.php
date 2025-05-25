@@ -42,6 +42,7 @@ class AccessoryController extends Controller
             'purchase_price' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
+
         Accessory::create([
             'title' => $request->title,
             'description' => $request->description,

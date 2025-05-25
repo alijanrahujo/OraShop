@@ -15,7 +15,7 @@ class Transaction extends Model
         'transactionable_type',
         'type',
         'amount',
-        'entry_amount',
+        'previous',
         'description',
         'transaction_date',
     ];

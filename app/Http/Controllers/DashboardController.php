@@ -2,17 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Load;
 use App\Models\Account;
 use App\Models\Accessory;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class DashboardController extends Controller
 {
+
     public function index(Request $request)
     {
-        $date = date('Y-m-d');
+
+        $date = Session::get('date', function () {
+            $today = Carbon::today()->format('Y-m-d');
+            Session::put('date', $today);
+            return $today;
+        });
+
+        $tran_account = Transaction::selectRaw('transactionable_id, SUM(amount) as total')
+        ->where('transactionable_type', 'App\\Models\\Account')
+        ->where('transaction_date',$date)
+        ->groupBy('transactionable_id')
+        ->get()
+        ->map(function ($item) {
+            $account = \App\Models\Account::find($item->transactionable_id);
+            return [
+                'account_title' => $account ? $account->title.' ('.$account->bank_name.')' : 'Unknown Account',
+                'total_amount' => $item->total,
+            ];
+        });
+
         $accounts = Account::get();
         $accountAll = Account::get();
         $loads = Load::get();
@@ -41,13 +63,13 @@ class DashboardController extends Controller
         // ];
 
         $data = [
-            'loads' => Transaction::where(['transaction_date'=>$date,'transactionable_type'=>'App\Models\Load'])->sum('entry_amount'),
-            'accessories' => Transaction::where(['transaction_date'=>$date,'transactionable_type'=>'App\Models\Accessory'])->sum('entry_amount'),
-            'account' => Transaction::where(['transaction_date'=>$date,'transactionable_type'=>'App\Models\Account'])->sum('entry_amount'),
+            'loads' => Transaction::where(['transaction_date'=>$date,'transactionable_type'=>'App\Models\Load'])->sum('previous'),
+            'accessories' => Transaction::where(['transaction_date'=>$date,'transactionable_type'=>'App\Models\Accessory'])->sum('previous'),
+            'account' => Transaction::where(['transaction_date'=>$date,'transactionable_type'=>'App\Models\Account'])->sum('previous'),
             'opening_balance' => $currentBalance,
         ];
         $data['closing_balance'] = $data['accessories']+$data['loads']+$data['account'];
 
-        return view('admin.dashboard', compact('data','currentBalance','date','accountAll','accounts','transactions', 'loads', 'accessories'));
+        return view('admin.dashboard', compact('tran_account','data','currentBalance','date','accountAll','accounts','transactions', 'loads', 'accessories'));
     }
 }

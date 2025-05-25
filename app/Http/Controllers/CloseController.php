@@ -40,7 +40,7 @@ class CloseController extends Controller
                     'type' => $type,
                     'transaction_date' => $request->date,
                     'amount' => $amount,
-                    'entry_amount' => $request['amount'][$key],
+                    'previous' => $request['amount'][$key],
                     'description' => 'Account closed',
                 ]);
             }
@@ -82,7 +82,7 @@ class CloseController extends Controller
                     'type' => $type,
                     'transaction_date' => $request->date,
                     'amount' => $amount,
-                    'entry_amount' => $request['amount'][$key],
+                    'previous' => $request['amount'][$key],
                     'description' => 'Load closed',
                 ]);
 
@@ -93,7 +93,7 @@ class CloseController extends Controller
                         'type' => 'deposit',
                         'transaction_date' => $request->date,
                         'amount' => $commission,
-                        'entry_amount' => $commission,
+                        'previous' => $commission,
                         'description' => 'Load commission closed',
                     ]);
                 }
@@ -117,7 +117,7 @@ class CloseController extends Controller
                 'type' => 'deposit',
                 'transaction_date' => $request->date,
                 'amount' => $request->commission,
-                'entry_amount' => $request->commission,
+                'previous' => $request->commission,
                 'description' => 'EasyPaisa/JazzCash commission closed',
             ]);
         }

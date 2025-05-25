@@ -22,4 +22,9 @@ class Load extends Model
     {
         return $this->morphMany(Transaction::class, 'transactionable');
     }
+
+     public function closeAccounts()
+    {
+        return $this->morphMany(CloseAccount::class, 'closeable');
+    }
 }

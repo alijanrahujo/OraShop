@@ -2,10 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoadController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\CloseController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +37,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('load/deposit', [LoadController::class, 'deposit'])->name('load.deposit');
     Route::resource('load', LoadController::class);
+    Route::resource('purchase', PurchaseController::class);
+    Route::resource('sale', SaleController::class);
+
+    //Reports
+    Route::get('report.sale',[ReportController::class,'saleReport'])->name('report.sale');
+    Route::get('report.account',[ReportController::class,'accountReport'])->name('report.account');
+    Route::get('report.load',[ReportController::class,'loadReport'])->name('report.load');
+    Route::get('report.purchase',[ReportController::class,'purchaseReport'])->name('report.purchase');
+    Route::get('report.balance',[ReportController::class,'balanceReport'])->name('report.balance');
 
     //Close Controller
     Route::prefix('close')->group(function () {

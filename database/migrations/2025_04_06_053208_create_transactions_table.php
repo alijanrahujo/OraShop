@@ -23,7 +23,7 @@ class CreateTransactionsTable extends Migration
 
             $table->enum('type', ['deposit', 'withdrawal', 'transfer', 'purchase', 'sale']);
             $table->decimal('amount', 15, 2);
-            $table->decimal('entry_amount', 15, 2);
+            $table->string('previous')->nullable();
             $table->text('description')->nullable();
             $table->date('transaction_date')->nullable();
             $table->timestamps();

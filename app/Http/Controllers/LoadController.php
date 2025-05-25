@@ -93,7 +93,8 @@ class LoadController extends Controller
      */
     public function destroy(Load $load)
     {
-        //
+        $load->delete();
+        return redirect()->route('load.index')->with('success', 'Load Account deleted successfully.');
     }
 
     public function deposit(Request $request)
@@ -112,7 +113,7 @@ class LoadController extends Controller
                 'type' => 'deposit',
                 'transaction_date' => $request->date,
                 'amount' => $request->amount,
-                'entry_amount' => $request->amount,
+                'previous' => $load->balance,
                 'description' => 'Load Deposit',
             ]);
 

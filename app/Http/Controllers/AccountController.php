@@ -92,7 +92,8 @@ class AccountController extends Controller
      */
     public function destroy(Account $account)
     {
-        //
+        $account->delete();
+        return redirect()->route('account.index')->with('success', 'Account deleted successfully.');
     }
 
     public function deposit(Request $request)
@@ -113,7 +114,7 @@ class AccountController extends Controller
                 'type' => 'deposit',
                 'transaction_date' => $request->date,
                 'amount' => $request->amount,
-                'entry_amount' => $request->amount,
+                'previous' => $account->balance,
                 'description' => $request->description,
             ]);
 
