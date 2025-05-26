@@ -59,15 +59,12 @@
                                         <a href="{{ route('purchase.show', $purchase->id) }}"
                                             class="btn btn-sm btn-primary">Show</a>
                                         <a href="{{ route('purchase.edit', $purchase->id) }}"
-                                            class="btn btn-sm btn-primary">Edit</a>
-                                        <form action="{{ route('purchase.destroy', $purchase->id) }}" method="POST"
-                                            style="display:inline;"
-                                            onsubmit="return confirm('Are you sure you want to delete this?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                        </form>
+                                            class="btn btn-sm btn-warning">Edit</a>
+                                        <button type="button" class="btn btn-sm btn-danger delete-purchase"
+                                            data-id="{{ $purchase->id }}"
+                                            data-toggle="modal" data-target="#deleteModal">Delete</button>
                                     </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -119,7 +116,38 @@
         </div>
     </div>
 
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalTitle">Delete Purchase</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="" method="POST" id="deleteForm">
+                    @method('DELETE')
+                    @csrf
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete this purchase?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('script')
-
+<script>
+    $('.delete-purchase').click(function() {
+        var id = $(this).data('id');
+        $('#deleteForm').attr('action', 'purchase/' + id);
+    });
+</script>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\Accessory;
 use App\Models\SaleDetail;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -98,7 +99,7 @@ class SaleController extends Controller
                         'user_id' => auth()->id(),
                         'type' => 'sale',
                         'transaction_date' => $request->date,
-                        'amount' => $price,
+                        'amount' => $total,
                         'previous' => $accessory->quantity,
                         'description' => 'Accessory Sale',
                     ]);
@@ -131,7 +132,8 @@ class SaleController extends Controller
      */
     public function show(Sale $sale)
     {
-        //
+        $saleDetails = SaleDetail::with('accessory')->where('sale_id', $sale->id)->get();
+        return view('admin.sale.show', compact('sale', 'saleDetails'));
     }
 
     /**
@@ -142,7 +144,9 @@ class SaleController extends Controller
      */
     public function edit(Sale $sale)
     {
-        //
+        $accessories = Accessory::get();
+        $saleDetails = SaleDetail::where('sale_id', $sale->id)->get();
+        return view('admin.sale.edit', compact('sale', 'accessories', 'saleDetails'));
     }
 
     /**
@@ -154,7 +158,87 @@ class SaleController extends Controller
      */
     public function update(Request $request, Sale $sale)
     {
-        //
+        $request->validate([
+            'accessory_id' => 'required|array',
+            'accessory_id.*' => 'required|exists:accessories,id',
+            'qty' => 'required|array',
+            'qty.*' => 'required|integer|min:1',
+            'price' => 'required|array',
+            'price.*' => 'required|numeric|min:1',
+            'date' => 'required|date',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            // Get existing sale details
+            $existingDetails = SaleDetail::where('sale_id', $sale->id)->get();
+            
+            // Subtract quantities from accessories for existing sale details
+            foreach ($existingDetails as $detail) {
+                $accessory = Accessory::find($detail->accessory_id);
+                if ($accessory) {
+                    $accessory->quantity += $detail->qty;
+                    $accessory->save();
+
+                    $accessory->transactions()->where('type', 'sale')->where('transaction_date', $sale->date)->delete();
+                }
+            }
+
+            // Delete existing sale details
+            SaleDetail::where('sale_id', $sale->id)->delete();
+
+            // Calculate totals
+            $totalQty = 0;
+            $totalPrice = 0;
+
+            // Create new sale details and update accessories
+            foreach ($request->accessory_id as $key => $accessoryId) {
+                $qty = $request->qty[$key];
+                $price = $request->price[$key];
+                $total = $qty * $price;
+
+                // Create sale detail
+                SaleDetail::create([
+                    'sale_id' => $sale->id,
+                    'accessory_id' => $accessoryId,
+                    'qty' => $qty,
+                    'unit_cost' => $price,
+                ]);
+
+                // Update accessory quantity
+                $accessory = Accessory::find($accessoryId);
+                if ($accessory) {
+                    $accessory->quantity -= $qty;
+                    $accessory->save();
+
+                    // Create transaction record
+                    $accessory->transactions()->create([
+                        'user_id' => auth()->id(),
+                        'type' => 'sale',
+                        'transaction_date' => $request->date,
+                        'amount' => $total,
+                        'previous' => $accessory->quantity,
+                        'description' => 'Accessory Sale',
+                    ]);
+                }
+
+                $totalQty += $qty;
+                $totalPrice += ($qty * $price);
+            }
+
+            // Update sale
+            $sale->update([
+                'total_qty' => $totalQty,
+                'total_price' => $totalPrice,
+                'date' => $request->date,
+            ]);
+
+            DB::commit();
+            return redirect()->route('sale.index')->with('success', 'Sale updated successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Error updating sale: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -165,6 +249,28 @@ class SaleController extends Controller
      */
     public function destroy(Sale $sale)
     {
-        //
+        DB::beginTransaction();
+        try {
+            // Get sale details to update accessory quantities
+            $saleDetails = SaleDetail::where('sale_id', $sale->id)->get();
+            foreach ($saleDetails as $detail) {
+                $accessory = Accessory::find($detail->accessory_id);
+                if ($accessory) {
+                    // Update accessory quantity back
+                    $accessory->update(['quantity' => $accessory->quantity + $detail->qty]);
+                    // Delete related transactions
+                    $accessory->transactions()->where('type', 'sale')->where('transaction_date', $sale->date)->delete();
+                }
+            }
+            // Delete related sale details
+            SaleDetail::where('sale_id', $sale->id)->delete();
+            // Delete the sale
+            $sale->delete();
+            DB::commit();
+            return redirect()->route('sale.index')->with('success', 'Sale deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Failed to delete sale: ' . $e->getMessage()]);
+        }
     }
 }

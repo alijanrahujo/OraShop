@@ -61,8 +61,13 @@
                                     <td>{{ $accessory->quantity }}</td>
                                     <td>{{ ($accessory->status)?'Actice':'Deactive' }}</td>
                                     <td class="text-right">
-                                        <a href="{{ route('accessory.edit', $accessory->id) }}"
-                                            class="btn btn-sm btn-primary">Edit</a>
+                                        <button type="button" class="btn btn-sm btn-primary edit-accessory"
+                                            data-id="{{ $accessory->id }}"
+                                            data-title="{{ $accessory->title }}"
+                                            data-description="{{ $accessory->description }}"
+                                            data-purchase_price="{{ $accessory->purchase_price }}"
+                                            data-status="{{ $accessory->status }}"
+                                            data-toggle="modal" data-target="#editModal">Edit</button>
                                         <form action="{{ route('accessory.destroy', $accessory->id) }}" method="POST"
                                             style="display:inline;"
                                             onsubmit="return confirm('Are you sure you want to delete this?');">
@@ -71,6 +76,7 @@
                                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                         </form>
                                     </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -122,7 +128,68 @@
         </div>
     </div>
 
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalTitle">Edit Accessory</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="" method="POST" id="editForm" enctype="multipart/form-data">
+                    @method('PUT')
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="edit_title" class="control-label">Title: <span class="text-danger">*</span></label>
+                            <input type="text" name="title" class="form-control" id="edit_title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_description" class="control-label">Description:</label>
+                            <input type="text" name="description" class="form-control" id="edit_description">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_purchase_price" class="control-label">Purchase Price: <span class="text-danger">*</span></label>
+                            <input type="number" name="purchase_price" class="form-control" id="edit_purchase_price" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_image" class="control-label">Image:</label>
+                            <input type="file" name="image" class="form-control" id="edit_image">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_status" class="control-label">Status:</label>
+                            <select name="status" class="form-control" id="edit_status">
+                                <option value="1">Active</option>
+                                <option value="0">Deactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('script')
-
+<script>
+    $('.edit-accessory').click(function() {
+        var id = $(this).data('id');
+        var title = $(this).data('title');
+        var description = $(this).data('description');
+        var purchase_price = $(this).data('purchase_price');
+        var status = $(this).data('status');
+        $('#edit_title').val(title);
+        $('#edit_description').val(description);
+        $('#edit_purchase_price').val(purchase_price);
+        $('#edit_status').val(status);
+        $('#editForm').attr('action', 'accessory/' + id);
+    });
+</script>
 @endsection

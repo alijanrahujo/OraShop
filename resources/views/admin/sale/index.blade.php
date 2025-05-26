@@ -60,7 +60,7 @@
                                         <a href="{{ route('sale.show', $sale->id) }}"
                                             class="btn btn-sm btn-primary">Show</a>
                                         <a href="{{ route('sale.edit', $sale->id) }}"
-                                            class="btn btn-sm btn-primary">Edit</a>
+                                            class="btn btn-sm btn-warning">Edit</a>
                                         <form action="{{ route('sale.destroy', $sale->id) }}" method="POST"
                                             style="display:inline;"
                                             onsubmit="return confirm('Are you sure you want to delete this?');">

@@ -85,10 +85,23 @@ class AccessoryController extends Controller
      */
     public function update(Request $request, Accessory $accessory)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'purchase_price' => 'required|numeric',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+        $accessory->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'purchase_price' => $request->purchase_price,
+            'selling_price' => $request->purchase_price,
+            'image' => $request->image ? $request->image->store('images','public') : $accessory->image,
+        ]);
+        return redirect()->route('accessory.index')->with('success', 'Accessory updated successfully.');
     }
 
-    /**
+    /** 
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Accessory  $accessory
