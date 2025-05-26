@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body print-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <h4 class="mt-0 header-title">Purchase Information</h4>
@@ -120,11 +120,11 @@
                             </div>
                         </div>
 
-                        <div class="row mt-4">
+                        <div class="row mt-4 no-print">
                             <div class="col-12">
                                 <a href="{{ route('purchase.edit', $purchase->id) }}" class="btn btn-gradient-primary">Edit</a>
                                 <a href="{{ route('purchase.index') }}" class="btn btn-gradient-danger">Back</a>
-                                <button onclick="window.print()" class="btn btn-gradient-info no-print">Print</button>
+                                <button onclick="printContent()" class="btn btn-gradient-info">Print</button>
                             </div>
                         </div>
                     </div>
@@ -134,15 +134,58 @@
 
     </div><!-- container -->
 
-    <style>
-        @media print {
-            .no-print {
-                display: none !important;
-            }
-            .card-body {
-                padding: 0 !important;
-            }
+    
+    <script>
+        function printContent() {
+            var printContent = document.querySelector('.print-body').innerHTML;
+            var originalContent = document.body.innerHTML;
+            
+            var printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Purchase Details</title>
+                        <link rel="stylesheet" href="{{ asset('admin/assets/css/bootstrap.min.css') }}">
+                        <style>
+                            body {
+                                padding: 20px;
+                            }
+                            .table {
+                                width: 100%;
+                                margin-bottom: 1rem;
+                                border-collapse: collapse;
+                            }
+                            .table th, .table td {
+                                padding: 0.75rem;
+                                border: 1px solid #dee2e6;
+                            }
+                            .table-bordered {
+                                border: 1px solid #dee2e6;
+                            }
+                            .img-thumbnail {
+                                max-width: 100px;
+                                height: auto;
+                            }
+                            .text-end {
+                                text-align: right;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        ${printContent}
+                    </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            printWindow.focus();
+            
+            // Wait for images to load
+            setTimeout(function() {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
         }
-    </style>
+    </script>
 
 @endsection 
