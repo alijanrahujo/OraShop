@@ -44,6 +44,7 @@
                                     <th>Ref No</th>
                                     <th>Items</th>
                                     <th>Total Amount</th>
+                                    <th>Date</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
@@ -55,6 +56,7 @@
                                     <td>{{ $purchase->reference_no }}</td>
                                     <td>{{ $purchase->items }}</td>
                                     <td>{{ $purchase->grand_total }}</td>
+                                    <td>{{ $purchase->date }}</td>
                                     <td class="text-right">
                                         <a href="{{ route('purchase.show', $purchase->id) }}"
                                             class="btn btn-sm btn-primary">Show</a>

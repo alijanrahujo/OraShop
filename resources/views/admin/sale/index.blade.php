@@ -43,6 +43,7 @@
                                     <th>Items</th>
                                     <th>Total Items</th>
                                     <th>Total Amount</th>
+                                    <th>Date</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
@@ -56,6 +57,7 @@
                                     </td>
                                     <td>{{ $sale->items }}</td>
                                     <td>{{ $sale->grand_total }}</td>
+                                    <td>{{ $sale->date }}</td>
                                     <td class="text-right">
                                         <a href="{{ route('sale.show', $sale->id) }}"
                                             class="btn btn-sm btn-primary">Show</a>
