@@ -185,12 +185,14 @@ class CloseDay extends Component
         $this->totalCurrent = 0;
         $this->totalCommission = 0;
         $this->totalDeposit = 0;
+        $this->totalSale = 0;
 
         foreach ($this->load as $item) {
             $this->totalPrevious += $item['previous'] ?? 0;
             $this->totalCurrent += $item['current'] ?? 0;
             $this->totalCommission += $item['commission'] ?? 0;
             $this->totalDeposit += $item['deposit'] ?? 0;
+            $this->totalSale += $item['credit'] ?? 0;
         }
         $this->totalLoad = ($this->totalPrevious + $this->totalDeposit) - $this->totalCurrent;
 

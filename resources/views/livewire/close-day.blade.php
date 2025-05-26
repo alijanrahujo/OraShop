@@ -52,6 +52,7 @@
                                     <th>Previous Balance</th>
                                     <th>Deposit</th>
                                     <th>Current Balance</th>
+                                    <th>Sale</th>
                                     <th>Comm</th>
                                 </tr>
                                 @foreach ($loads as $key=>$load)
@@ -61,9 +62,8 @@
                                     <td><label>{{$load->title}}</label></td>
                                     <td><input type="number" wire:model.lazy="load.{{$key}}.previous" readonly class="form-control"></td>
                                     <td><input type="number" wire:model.lazy="load.{{$key}}.deposit" readonly class="form-control"></td>
-                                    <td>
-                                        <input type="number" wire:model.lazy="load.{{$key}}.current" class="form-control @error('load.'.$key.'.current') is-invalid @enderror">
-                                    </td>
+                                    <td><input type="number" wire:model.lazy="load.{{$key}}.current" class="form-control @error('load.'.$key.'.current') is-invalid @enderror"></td>
+                                    <td><input type="number" wire:model.lazy="load.{{$key}}.credit" readonly class="form-control"></td>
                                     <td><input type="number" wire:model.lazy="load.{{$key}}.commission" class="form-control"></td>
                                 </tr>
                                 @endforeach
@@ -72,6 +72,7 @@
                                     <td>Rs: <span>{{$totalPrevious}}</span></td>
                                     <td>Rs: <span>{{$totalDeposit}}</span></td>
                                     <td>Rs: <span>{{$totalCurrent}}</span></td>
+                                    <td>Rs: <span>{{$totalSale}}</span></td>
                                     <td>Rs: <span>{{$totalCommission}}</span></td>
                                 </tr>
                             </table>
@@ -132,7 +133,7 @@
 
                                 <tr>
                                     <td>Loads</td>
-                                    <td>Rs: {{$totalLoad}}</td>
+                                    <td>Rs: {{$totalSale}}</td>
                                 </tr>
 
                                 <tr>
