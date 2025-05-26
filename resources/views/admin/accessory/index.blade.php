@@ -61,7 +61,7 @@
                                     <td>{{ $accessory->quantity }}</td>
                                     <td>{{ ($accessory->status)?'Actice':'Deactive' }}</td>
                                     <td class="text-right">
-                                        <button type="button" class="btn btn-sm btn-primary edit-accessory"
+                                        <button type="button" class="btn btn-sm btn-warning edit-accessory"
                                             data-id="{{ $accessory->id }}"
                                             data-title="{{ $accessory->title }}"
                                             data-description="{{ $accessory->description }}"
