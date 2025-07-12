@@ -219,8 +219,8 @@
                                             data-quantity="{{ $accessory->quantity }}"
                                             data-code="{{ $accessory->id }}">
                                             <div class="product-card">
-                                                <img src="{{ asset('storage/' . $accessory->image) }}"
-                                                    alt="{{ $accessory->title }}">
+                                                <img src="{{ asset($accessory->image ? 'storage/' . $accessory->image : 'admin/assets/images/no-image.png') }}"
+     alt="{{ $accessory->title }}">
                                                 <div>{{ $accessory->title }}</div>
                                             </div>
                                         </div>

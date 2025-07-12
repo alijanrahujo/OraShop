@@ -55,7 +55,9 @@
                                 @foreach ($accessories as $accessory)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td><img src="{{ asset('storage/' . $accessory->image) }}" width="60"></td>
+                                    {{-- <td><img src="{{ asset('storage/' . $accessory->image) }}" width="60"></td> --}}
+                                    <td><img src="{{ asset($accessory->image ? 'storage/' . $accessory->image : 'admin/assets/images/no-image.png') }}"
+     alt="{{ $accessory->title }}" width="60"></td>
                                     <td>{{ $accessory->title }}</td>
                                     <td>{{ $accessory->category->title??'' }}</td>
                                     <td>{{ $accessory->description }}</td>
