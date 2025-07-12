@@ -213,7 +213,7 @@
                                     <!-- Sample Products -->
                                     @foreach ($accessories as $accessory)
                                         <div class="col-md-3 mb-3 product-item"
-                                            data-category="{{ $accessory->category->title }}"
+                                            data-category="{{ $accessory->category->title??'' }}"
                                             data-id="{{ $accessory->id }}"
                                             data-name="{{ $accessory->title }}"
                                             data-quantity="{{ $accessory->quantity }}"
