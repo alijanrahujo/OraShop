@@ -18,7 +18,8 @@ class PurchaseDetail extends Model
         'discount',
         'tax',
         'total',
-        'purchase_id'
+        'purchase_id',
+        'shop_id',
     ];
 
     public function accessory()

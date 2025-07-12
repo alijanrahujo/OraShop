@@ -18,6 +18,7 @@ class Load extends Model
         'balance',
         'commission',
         'status',
+        'shop_id',
     ];
 
     public function transactions()

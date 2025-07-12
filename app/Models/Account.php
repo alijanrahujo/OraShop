@@ -22,6 +22,7 @@ class Account extends Model
         'account_holder_name',
         'balance',
         'status',
+        'shop_id',
     ];
 
     public function transactions()

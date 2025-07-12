@@ -23,6 +23,7 @@ class CloseAccount extends Model
         'closeable_type',
         'closeable_id',
         'user_id',
+        'shop_id',
     ];
 
     public function closeable()

@@ -26,7 +26,8 @@ class Purchase extends Model
         'remaining_amount',
         'status',
         'payment_status',
-        'date'
+        'date',
+        'shop_id',
     ];
 
     public function purchaseDetails()

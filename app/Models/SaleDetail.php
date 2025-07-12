@@ -19,6 +19,7 @@ class SaleDetail extends Model
         'tax',
         'total',
         'sale_id',
+        'shop_id',
     ];
 
     public function accessory()

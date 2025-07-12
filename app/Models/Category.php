@@ -15,6 +15,7 @@ class Category extends Model
         'title',
         'description',
         'image',
+        'shop_id',
     ];
 
     public function Accessories()

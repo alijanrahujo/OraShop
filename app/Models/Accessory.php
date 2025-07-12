@@ -20,6 +20,7 @@ class Accessory extends Model
         'image',
         'status',
         'category_id',
+        'shop_id',
     ];
 
     public function transactions()
