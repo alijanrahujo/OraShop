@@ -55,6 +55,7 @@
             <!-- Navbar -->
             <nav class="navbar-custom">
                 <ul class="list-unstyled topbar-nav float-right mb-0">
+                    <x-change-shop />
                     <li class="hidden-sm">
                         <a class="nav-link dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="javascript: void(0);" role="button"
                             aria-haspopup="false" aria-expanded="false">
@@ -204,8 +205,12 @@
                     <a href="{{ Route('account.index') }}"><i class="ti-layers-alt"></i><span>Accounts</span><span class="menu-arrow"></span></a>
                 </li>
 
-                <li class="{{ Request::routeIs('accessory.*') ? 'mm-active' : '' }}">
-                    <a href="{{ Route('accessory.index') }}"><i class="ti-bag"></i><span>Accessories</span><span class="menu-arrow"></span></a>
+                <li class="{{ Request::routeIs('accessory.*','category.*') ? 'mm-active' : '' }}">
+                    <a href="javascript: void(0);"><i class="ti-lock"></i><span>Accessories</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li class="nav-item"><a class="nav-link" href="{{ Route('category.index') }}"><i class="ti-control-record"></i>Category</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ Route('accessory.index') }}"><i class="ti-control-record"></i>Product</a></li>
+                    </ul>
                 </li>
 
                 <li class="{{ Request::routeIs('purchase.*') ? 'mm-active' : '' }}">
@@ -218,6 +223,10 @@
 
                 <li class="{{ Request::routeIs('load.*') ? 'mm-active' : '' }}">
                     <a href="{{ Route('load.index') }}"><i class="ti-package"></i><span>Load</span><span class="menu-arrow"></span></a>
+                </li>
+
+                <li class="{{ Request::routeIs('pos.*') ? 'mm-active' : '' }}">
+                    <a href="{{ Route('pos.index') }}"><i class="ti-package"></i><span>POS</span><span class="menu-arrow"></span></a>
                 </li>
 
                 <li class="{{ Request::routeIs('report.*') ? 'mm-active' : '' }}">

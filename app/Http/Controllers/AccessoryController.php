@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Accessory;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class AccessoryController extends Controller
@@ -15,7 +16,8 @@ class AccessoryController extends Controller
     public function index()
     {
         $accessories = Accessory::get();
-        return view('admin.accessory.index',compact('accessories'));
+        $categories = Category::get();
+        return view('admin.accessory.index',compact('accessories','categories'));
     }
 
     /**
@@ -87,12 +89,14 @@ class AccessoryController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'category_id' => 'required|numeric',
             'description' => 'nullable|string|max:255',
             'purchase_price' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
         $accessory->update([
             'title' => $request->title,
+            'category_id' => $request->category_id,
             'description' => $request->description,
             'purchase_price' => $request->purchase_price,
             'selling_price' => $request->purchase_price,
@@ -101,7 +105,7 @@ class AccessoryController extends Controller
         return redirect()->route('accessory.index')->with('success', 'Accessory updated successfully.');
     }
 
-    /** 
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Accessory  $accessory

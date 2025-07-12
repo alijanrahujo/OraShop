@@ -1,14 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\POScontroller;
 use App\Http\Controllers\LoadController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CloseController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,11 +37,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('accessory/sale', [AccessoryController::class, 'sale'])->name('accessory.sale');
     Route::resource('accessory', AccessoryController::class);
+    Route::resource('pos', POScontroller::class);
 
     Route::post('load/deposit', [LoadController::class, 'deposit'])->name('load.deposit');
     Route::resource('load', LoadController::class);
     Route::resource('purchase', PurchaseController::class);
     Route::resource('sale', SaleController::class);
+    Route::resource('category', CategoryController::class);
+
+    Route::post('shop/change', [ShopController::class, 'change'])->name('shop.change');
+
 
     //Reports
     Route::get('report.sale',[ReportController::class,'saleReport'])->name('report.sale');
