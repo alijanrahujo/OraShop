@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Accessory extends Model
 {
     use HasFactory;
-    use BelongsToShop;
+    // use BelongsToShop;
     protected $softDelete = true;
     protected $fillable = [
         'title',
