@@ -43,6 +43,7 @@
                                     <th>S#</th>
                                     <th>Image</th>
                                     <th>Title</th>
+                                    <th>Code</th>
                                     <th>Category</th>
                                     <th>Description</th>
                                     <th>Purchase Price</th>
@@ -59,6 +60,7 @@
                                     <td><img src="{{ asset($accessory->image ? 'storage/' . $accessory->image : 'admin/assets/images/no-image.png') }}"
      alt="{{ $accessory->title }}" width="60"></td>
                                     <td>{{ $accessory->title }}</td>
+                                    <td>{{ $accessory->code }}</td>
                                     <td>{{ $accessory->category->title??'' }}</td>
                                     <td>{{ $accessory->description }}</td>
                                     <td>{{ $accessory->purchase_price }}</td>

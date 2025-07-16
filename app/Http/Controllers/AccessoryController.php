@@ -47,6 +47,7 @@ class AccessoryController extends Controller
 
         Accessory::create([
             'title' => $request->title,
+            'code' => getNextAccessoryCode(),
             'description' => $request->description,
             'purchase_price' => $request->purchase_price,
             'selling_price' => $request->purchase_price,

@@ -13,6 +13,7 @@ class Accessory extends Model
     protected $softDelete = true;
     protected $fillable = [
         'title',
+        'code',
         'description',
         'purchase_price',
         'selling_price',

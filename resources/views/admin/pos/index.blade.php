@@ -43,6 +43,21 @@
             transform: scale(1.05);
         }
 
+        .product-card .quantity {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            z-index: 10;
+        }
+
         .category-btn {
             margin-right: 5px;
             border-radius: 20px;
@@ -162,10 +177,10 @@
                         <div class="row">
                             <!-- Left Panel -->
                             <div class="col-md-5 left-panel">
-                                <form action="{{Route('pos.store')}}" method="post">
+                                <form action="{{ Route('pos.store') }}" method="post">
                                     @csrf
-                                    {{-- <input id="product-search" class="form-control mb-2" placeholder="Scan/Search product by name/code"> --}}
-                                    <input type="date" name="date" class="form-control mb-2" value="{{date('Y-m-d')}}">
+                                    <input type="date" name="date" class="form-control mb-2"
+                                        value="{{ date('Y-m-d') }}">
                                     <!-- Cart Table -->
                                     <div class="cart">
                                         <table class="table table-bordered text-center">
@@ -198,6 +213,9 @@
 
                             <!-- Right Panel -->
                             <div class="col-md-7">
+                                <input id="product-search" class="form-control mb-2"
+                                    placeholder="Search product by name/code">
+
                                 <div class="d-flex justify-content-between mb-2">
                                     <div>
                                         <button class="btn category-btn active" data-category="all">All</button>
@@ -213,15 +231,17 @@
                                     <!-- Sample Products -->
                                     @foreach ($accessories as $accessory)
                                         <div class="col-md-3 mb-3 product-item"
-                                            data-category="{{ $accessory->category->title??'' }}"
-                                            data-id="{{ $accessory->id }}"
-                                            data-name="{{ $accessory->title }}"
-                                            data-quantity="{{ $accessory->quantity }}"
-                                            data-code="{{ $accessory->id }}">
+                                            data-category="{{ $accessory->category->title ?? '' }}"
+                                            data-id="{{ $accessory->id }}" data-name="{{ $accessory->title }}"
+                                            data-quantity="{{ $accessory->quantity }}" data-code="{{ $accessory->code }}">
                                             <div class="product-card">
+                                                <span class="bagde {{($accessory->quantity >0)?'badge-success':'badge-danger'}} badge-success quantity">{{$accessory->quantity}}</span>
                                                 <img src="{{ asset($accessory->image ? 'storage/' . $accessory->image : 'admin/assets/images/no-image.png') }}"
-     alt="{{ $accessory->title }}">
-                                                <div>{{ $accessory->title }}</div>
+                                                    alt="{{ $accessory->title }}">
+                                                <div>
+                                                    Code: {{ $accessory->code }}<br>
+                                                    {{ $accessory->title }}
+                                                </div>
                                             </div>
                                         </div>
                                     @endforeach
@@ -301,7 +321,7 @@
             const id = $(this).data('id');
             const quantity = $(this).data('quantity');
 
-            if(quantity < 1){
+            if (quantity < 1) {
                 alert("Out of stock.");
                 return;
             }
@@ -340,8 +360,7 @@
             const price = parseFloat(row.find('.price').val());
             const qty = parseInt(row.find('.qty').val());
             const stock = parseInt(row.find('.stock').val());
-            if(stock <= qty)
-            {
+            if (stock <= qty) {
                 row.find('.qty').val(stock);
                 qty = parseInt(stock);
             }
@@ -374,19 +393,16 @@
             $('#grand-total').text(total.toFixed(2));
         }
 
-        $('#product-search').on('input', function () {
-        const search = $(this).val().toLowerCase().trim();
+        $('#product-search').on('keyup', function () {
+            let value = $(this).val().toLowerCase();
 
-        $('.product-item').each(function () {
-            const name = $(this).data('name').toLowerCase();
-            const code = $(this).data('code') ? $(this).data('code') : '';
+            $('.product-item').filter(function () {
+                let name = $(this).data('name')?.toLowerCase() || '';
+                let code = $(this).data('code')?.toLowerCase() || '';
 
-            if (name.includes(search) || code.includes(search)) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
+                // Show only if name or code includes search input
+                $(this).toggle(name.includes(value) || code.includes(value));
+            });
         });
-    });
     </script>
 @endsection
