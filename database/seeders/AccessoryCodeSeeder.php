@@ -14,46 +14,37 @@ class AccessoryCodeSeeder extends Seeder
      */
     public function run()
     {
-        $existingCodes = [];
-        $products = Accessory::whereNull('code')->orderBy('id')->get();
+        $usedCodes = [];
+
+        // $products = Accessory::whereNull('code')->orderBy('id')->get();
+        $products = Accessory::orderBy('id')->get();
 
         foreach ($products as $product) {
-            // Get the next unique code
-            $code = $this->getNextAvailableCode($existingCodes);
+            $categoryTitle = $product->category->title ?? 'default';
+
+            $code = $this->getUniqueCode($categoryTitle, $usedCodes);
+
             $product->code = $code;
             $product->save();
 
-            $existingCodes[] = $code;
+            $usedCodes[] = $code;
         }
     }
 
-    private function getNextAvailableCode(array $existingCodes): string
+    private function getUniqueCode(string $categoryTitle, array $usedCodes): string
     {
-        static $prefix = 'a';
-        static $number = 1;
+        $prefix = getPrefixFromCategory($categoryTitle);
+        $nextNumber = 1;
 
         while (true) {
-            $code = $prefix . $number;
+            $code = $prefix . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
 
-            if (!in_array($code, $existingCodes) &&
+            if (!in_array($code, $usedCodes) &&
                 !Accessory::where('code', $code)->exists()) {
-                // Prepare next values for future call
-                if ($number < 9) {
-                    $number++;
-                } else {
-                    $prefix = nextPrefix($prefix);
-                    $number = 1;
-                }
-
                 return $code;
             }
 
-            if ($number < 9) {
-                $number++;
-            } else {
-                $prefix = nextPrefix($prefix);
-                $number = 1;
-            }
+            $nextNumber++;
         }
     }
 }
