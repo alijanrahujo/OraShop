@@ -36,7 +36,7 @@
                             provides the based framework upon which plug-ins can built.
                         </p> --}}
 
-                        <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
+                        <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive"
                             style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr class="text-center">
@@ -45,7 +45,6 @@
                                     <th>Title</th>
                                     <th>Code</th>
                                     <th>Category</th>
-                                    <th>Description</th>
                                     <th>Purchase Price</th>
                                     <th>Quantity</th>
                                     <th>Status</th>
@@ -62,7 +61,6 @@
                                     <td>{{ $accessory->title }}</td>
                                     <td>{{ $accessory->code }}</td>
                                     <td>{{ $accessory->category->title??'' }}</td>
-                                    <td>{{ $accessory->description }}</td>
                                     <td>{{ $accessory->purchase_price }}</td>
                                     <td>{{ $accessory->quantity }}</td>
                                     <td>{{ ($accessory->status)?'Actice':'Deactive' }}</td>
