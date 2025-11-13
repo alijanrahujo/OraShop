@@ -4,10 +4,75 @@ namespace App\Http\Controllers;
 
 use App\Models\Load;
 use App\Models\Account;
+use App\Models\CloseSale;
+use App\Models\SaleDetail;
 use Illuminate\Http\Request;
 
 class CloseController extends Controller
 {
+
+    public function sellClose()
+    {
+        $date = date('Y-m-d');
+        $date = "2025-11-05";
+
+        // $sales = SaleDetail::whereHas('sale', function($query) use ($date) {
+        //     $query->where('date','=',$date);
+        // })->with('sale','CloseSale')->get();
+
+        $sales = SaleDetail::where('is_closed',false)->with('sale','CloseSale')->get();
+
+        return view('admin.sale.close', compact('sales','date'));
+    }
+
+    public function closestore(Request $request)
+    {
+        // return $request;
+        $request->validate([
+            'date' => 'required|date',
+            'sale_detail_id' => 'required|array',
+            'code' => 'required|array',
+            'title' => 'required|array',
+            'category' => 'required|array',
+            'purchase_price' => 'required|array',
+            'qty' => 'required|array',
+            'unit_cost' => 'required|array',
+            'total_qty' => 'required|array',
+            'commission' => 'required|array',
+            'profit' => 'required|array',
+
+        ]);
+
+        foreach($request->sale_detail_id as $key=>$sale_detail_id)
+        {
+            $close_sale = new CloseSale;
+            $close_sale->date = $request->date;
+            $close_sale->sale_detail_id = $sale_detail_id;
+            $close_sale->code = $request->code[$key];
+            $close_sale->title = $request->title[$key];
+            $close_sale->category = $request->category[$key];
+            $close_sale->purchase_price = $request->purchase_price[$key];
+            $close_sale->qty = $request->qty[$key];
+            $close_sale->unit_cost = $request->unit_cost[$key];
+            $close_sale->total_qty = $request->total_qty[$key];
+            $close_sale->commission = $request->commission[$key];
+            $close_sale->profit = $request->profit[$key];
+            $close_sale->save();
+
+            if($close_sale)
+            {
+                $sale_detail = SaleDetail::find($sale_detail_id);
+                if($sale_detail)
+                {
+                    $sale_detail->is_closed = 1;
+                    $sale_detail->save();
+                }
+            }
+        }
+
+        return redirect('/')->with('success', 'Sales closed successfully.');
+    }
+
     public function account(Request $request)
     {
         // return $request;

@@ -24,6 +24,11 @@ class Accessory extends Model
         'shop_id',
     ];
 
+    public function Sales()
+    {
+        return $this->hasMany(SaleDetail::class,'accessory_id','id');
+    }
+
     public function transactions()
     {
         return $this->morphMany(Transaction::class, 'transactionable');

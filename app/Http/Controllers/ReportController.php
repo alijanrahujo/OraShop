@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Accessory;
 use Carbon\Carbon;
 use App\Models\Account;
+use App\Models\CloseSale;
 use App\Models\SaleDetail;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -11,6 +13,30 @@ use App\Models\PurchaseDetail;
 
 class ReportController extends Controller
 {
+    public function stock(Request $request)
+    {
+        $stocks = Accessory::orderBy('quantity','ASC')->get();
+        return view('admin.reports.stock',compact('stocks'));
+    }
+
+    public function saleCloseReport(Request $request)
+    {
+        $closeSale = CloseSale::query();
+
+        if ($request->has('date')) {
+            $closeSale->where('date', $request->date);
+        }
+        else
+        {
+            $closeSale->where('date',Carbon::today());
+        }
+
+        $closeSale = $closeSale->with('saleDetail')->get();
+
+
+        return view('admin.reports.close_sale',compact('closeSale','request'));
+    }
+
     public function saleReport(Request $request)
     {
         $saleDetails = SaleDetail::query();

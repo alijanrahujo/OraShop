@@ -20,6 +20,7 @@ class SaleDetail extends Model
         'total',
         'sale_id',
         'shop_id',
+        'is_closed',
     ];
 
     public function accessory()
@@ -30,5 +31,10 @@ class SaleDetail extends Model
     public function sale()
     {
         return $this->hasOne(Sale::class,'id','sale_id');
+    }
+
+    public function CloseSale()
+    {
+        return $this->hasOne(CloseSale::class,'sale_detail_id','id');
     }
 }

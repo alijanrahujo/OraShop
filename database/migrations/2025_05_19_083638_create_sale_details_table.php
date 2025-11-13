@@ -22,6 +22,7 @@ class CreateSaleDetailsTable extends Migration
             $table->decimal('tax', 8, 2)->default(0.00);
             $table->decimal('total', 8, 2)->default(0.00);
             $table->foreignId('sale_id')->constrained('sales')->cascadeOnDelete();
+            $table->boolean('is_closed')->default(false);
             $table->timestamps();
         });
     }

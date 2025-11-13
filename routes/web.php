@@ -32,12 +32,16 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     Route::any('dashboard',[DashboardController::class, 'index'])->name('dashboard');
 
-    Route::post('account/deposit', [AccountController::class, 'deposit'])->name('account.deposit');
-    Route::resource('account', AccountController::class);
-
     Route::get('accessory/sale', [AccessoryController::class, 'sale'])->name('accessory.sale');
     Route::resource('accessory', AccessoryController::class);
     Route::resource('pos', POScontroller::class);
+
+    Route::get('report/stock',[ReportController::class,'stock'])->name('report.stock');
+    Route::get('close/sell',[CloseController::class,'sellClose'])->name('report.sellClose');
+    Route::post('close/closestore',[CloseController::class,'closestore'])->name('sale.closestore');
+
+    Route::post('account/deposit', [AccountController::class, 'deposit'])->name('account.deposit');
+    Route::resource('account', AccountController::class);
 
     Route::post('load/deposit', [LoadController::class, 'deposit'])->name('load.deposit');
     Route::resource('load', LoadController::class);
@@ -54,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('report.load',[ReportController::class,'loadReport'])->name('report.load');
     Route::get('report.purchase',[ReportController::class,'purchaseReport'])->name('report.purchase');
     Route::get('report.balance',[ReportController::class,'balanceReport'])->name('report.balance');
+    Route::get('report.saleClose',[ReportController::class,'saleCloseReport'])->name('report.saleClose');
 
     //Close Controller
     Route::prefix('close')->group(function () {

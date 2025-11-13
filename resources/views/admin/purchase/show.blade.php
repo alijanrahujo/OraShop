@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.admin2')
 @section('title', 'Purchase Details')
 @section('content')
 
@@ -91,14 +91,14 @@
                                                 <tr>
                                                     <td>
                                                         @if($detail->accessory->image)
-                                                            <img src="{{ asset('storage/' . $detail->accessory->image) }}" 
-                                                                 alt="{{ $detail->accessory->title }}" 
-                                                                 class="img-thumbnail" 
+                                                            <img src="{{ asset('storage/' . $detail->accessory->image) }}"
+                                                                 alt="{{ $detail->accessory->title }}"
+                                                                 class="img-thumbnail"
                                                                  style="max-width: 100px;">
                                                         @else
-                                                            <img src="{{ asset('images/no-image.png') }}" 
-                                                                 alt="No Image" 
-                                                                 class="img-thumbnail" 
+                                                            <img src="{{ asset('images/no-image.png') }}"
+                                                                 alt="No Image"
+                                                                 class="img-thumbnail"
                                                                  style="max-width: 100px;">
                                                         @endif
                                                     </td>
@@ -134,12 +134,12 @@
 
     </div><!-- container -->
 
-    
+
     <script>
         function printContent() {
             var printContent = document.querySelector('.print-body').innerHTML;
             var originalContent = document.body.innerHTML;
-            
+
             var printWindow = window.open('', '_blank');
             printWindow.document.write(`
                 <html>
@@ -176,10 +176,10 @@
                     </body>
                 </html>
             `);
-            
+
             printWindow.document.close();
             printWindow.focus();
-            
+
             // Wait for images to load
             setTimeout(function() {
                 printWindow.print();
@@ -188,4 +188,4 @@
         }
     </script>
 
-@endsection 
+@endsection
