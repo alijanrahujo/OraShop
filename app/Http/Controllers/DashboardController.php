@@ -6,6 +6,9 @@ use Carbon\Carbon;
 use App\Models\Load;
 use App\Models\Account;
 use App\Models\Accessory;
+use App\Models\Purchase;
+use App\Models\Sale;
+use App\Models\SaleDetail;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -71,5 +74,15 @@ class DashboardController extends Controller
         $data['closing_balance'] = $data['accessories']+$data['loads']+$data['account'];
 
         return view('admin.dashboard', compact('tran_account','data','currentBalance','date','accountAll','accounts','transactions', 'loads', 'accessories'));
+    }
+
+    public function dashboard2()
+    {
+        $purchase = Purchase::where('date', Carbon::today())->sum('total_cost');
+        $sale = Sale::where('date', Carbon::today())->sum('total_cost');
+        $stock = Accessory::sum('quantity');
+        $solid = SaleDetail::sum('qty');
+
+        return view('admin.dashboard', compact('purchase', 'sale', 'stock', 'solid'));
     }
 }

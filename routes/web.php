@@ -30,7 +30,7 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::any('dashboard',[DashboardController::class, 'index'])->name('dashboard');
+    Route::any('dashboard',[DashboardController::class, 'dashboard2'])->name('dashboard');
 
     Route::get('accessory/sale', [AccessoryController::class, 'sale'])->name('accessory.sale');
     Route::resource('accessory', AccessoryController::class);
