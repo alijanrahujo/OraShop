@@ -326,11 +326,13 @@
                 return;
             }
 
-            let price = prompt(`Enter price for "${name}"`);
-            if (price === null || isNaN(price) || price.trim() === "") {
-                alert("Invalid price entered.");
-                return;
-            }
+            price = 0;
+
+            // let price = prompt(`Enter price for "${name}"`);
+            // if (price === null || isNaN(price) || price.trim() === "") {
+            //     alert("Invalid price entered.");
+            //     return;
+            // }
             price = parseFloat(price).toFixed(2);
 
             const existingRow = $(`#cart-body tr[data-name="${name}"]`);
