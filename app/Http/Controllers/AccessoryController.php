@@ -45,12 +45,15 @@ class AccessoryController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
+        $category = Category::find($request->category_id);
+
         Accessory::create([
             'title' => $request->title,
-            'code' => getNextAccessoryCode(),
+            'code' => getNextAccessoryCode($category->title),
             'description' => $request->description,
             'purchase_price' => $request->purchase_price,
             'selling_price' => $request->purchase_price,
+            'category_id' => $request->category_id,
             'image' => $request->image ? $request->image->store('images','public') : null,
         ]);
 

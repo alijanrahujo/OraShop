@@ -336,7 +336,7 @@
             price = parseFloat(price).toFixed(2);
 
             const existingRow = $(`#cart-body tr[data-name="${name}"]`);
-            if (existingRow.length) {
+            if (existingRow.length && 2 == 3) {
                 const qtyInput = existingRow.find('.qty');
                 qtyInput.val(parseInt(qtyInput.val()) + 1).trigger('input');
             } else {

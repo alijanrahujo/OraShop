@@ -14,7 +14,7 @@ class CloseController extends Controller
     public function sellClose()
     {
         $date = date('Y-m-d');
-        $date = "2025-11-05";
+        // $date = "2025-11-05";
 
         // $sales = SaleDetail::whereHas('sale', function($query) use ($date) {
         //     $query->where('date','=',$date);
